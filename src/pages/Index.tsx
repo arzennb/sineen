@@ -87,8 +87,7 @@ export default function Index() {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="bg-transparent border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 px-8 cursor-pointer"
+                className="bg-charcoal text-primary-foreground border-0 hover:bg-foreground px-8 cursor-pointer font-bold"
                 onClick={scrollToFeatured}
               >
                 اكتشف التشكيلة

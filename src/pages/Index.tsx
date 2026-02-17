@@ -40,59 +40,58 @@ export default function Index() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative h-[90vh] min-h-[550px] flex items-center overflow-hidden">
+      <section className="relative h-[100svh] md:h-[90vh] min-h-[550px] flex items-end md:items-center overflow-hidden pb-12 md:pb-0">
         {!imageLoaded && (
           <div className="absolute inset-0 bg-charcoal animate-pulse" />
         )}
         <motion.img
           src={heroBanner}
           alt="عباءات الصلاة"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-top md:object-center"
           initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: imageLoaded ? 1 : 1.1, opacity: imageLoaded ? 1 : 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
           onLoad={() => setImageLoaded(true)}
         />
-        <div className="absolute inset-0 hero-overlay" />
+        <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/60 to-transparent md:bg-none md:hero-overlay" />
 
-        {/* Decorative pattern */}
         <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMjAgMEwyNSAxMEwyMCAyMEwxNSAxMFoiIGZpbGw9IndoaXRlIi8+PC9zdmc+')]" />
 
         <div className="container relative z-10 text-primary-foreground">
           <motion.div
-            className="max-w-2xl space-y-8"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
+            className="max-w-2xl space-y-5 md:space-y-8 text-center md:text-right"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="inline-block gold-gradient px-4 py-1.5 rounded-full text-sm font-medium text-accent-foreground"
+              className="inline-block gold-gradient px-4 py-1.5 rounded-full text-xs md:text-sm font-medium text-accent-foreground"
             >
               ✨ تشكيلة جديدة 2026
             </motion.div>
-            <h1 className="font-heading text-5xl md:text-7xl font-bold leading-relaxed">
+            <h1 className="font-heading text-4xl md:text-7xl font-bold leading-snug md:leading-relaxed">
               أناقة الصلاة
               <br />
               <span className="text-gold">تبدأ من هنا</span>
             </h1>
-            <p className="text-lg md:text-xl opacity-90 max-w-lg leading-relaxed">
+            <p className="text-sm md:text-xl opacity-90 max-w-lg leading-relaxed mx-auto md:mx-0">
               اكتشف تشكيلتنا الفاخرة من العباءات الرجالية المصممة خصيصاً لراحتك وأناقتك أثناء الصلاة
             </p>
             <motion.div
-              className="flex flex-wrap gap-4"
+              className="flex flex-col sm:flex-row items-center md:items-start gap-3 md:gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
             >
-              <Button asChild size="lg" className="gold-gradient border-0 text-foreground font-bold text-base px-8 hover:scale-105 transition-transform">
+              <Button asChild size="lg" className="gold-gradient border-0 text-foreground font-bold text-base px-10 w-full sm:w-auto hover:scale-105 transition-transform">
                 <Link to="/products">تسوق الآن</Link>
               </Button>
               <Button 
                 size="lg" 
-                className="bg-charcoal text-primary-foreground border-0 hover:bg-foreground px-8 cursor-pointer font-bold"
+                className="bg-charcoal text-primary-foreground border-0 hover:bg-foreground px-8 w-full sm:w-auto cursor-pointer font-bold"
                 onClick={scrollToFeatured}
               >
                 اكتشف التشكيلة
@@ -102,9 +101,8 @@ export default function Index() {
           </motion.div>
         </div>
 
-        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          className="absolute bottom-3 md:bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
           animate={{ y: [0, 10, 0] }}
           transition={{ repeat: Infinity, duration: 2 }}
         >

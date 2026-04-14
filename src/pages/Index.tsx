@@ -3,7 +3,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ArrowLeft, Star, Truck, Shield, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { products } from "@/lib/products";
+import { useProducts } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import heroBanner from "@/assets/hero-banner.jpg";
 import { motion } from "framer-motion";
@@ -16,6 +16,7 @@ const features = [
 ];
 
 export default function Index() {
+  const { products } = useProducts();
   const featured = products.filter((p) => p.featured);
   const [email, setEmail] = useState("");
   const [imageLoaded, setImageLoaded] = useState(false);

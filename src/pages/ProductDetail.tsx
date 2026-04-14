@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useState } from "react";
 import { ArrowRight, ShoppingCart, Zap, ZoomIn } from "lucide-react";
-import { products } from "@/lib/products";
+import { useProducts } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ProductDetail() {
   const { id } = useParams();
+  const { products, getProductPrice } = useProducts();
+
   const product = products.find((p) => p.id === id);
   const { addItem } = useCart();
   const { toast } = useToast();
@@ -26,12 +28,16 @@ export default function ProductDetail() {
     );
   }
 
+  const price = getProductPrice(product, selectedSize);
+  const originalPrice = product.basePriceDZD;
+
   const handleAdd = () => {
     addItem(product, selectedSize, selectedColor);
     toast({ title: "تمت الإضافة ✓", description: `${product.name} أُضيف إلى السلة` });
   };
 
   const similar = products.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
+
 
   return (
     <div className="container py-10">
@@ -73,9 +79,9 @@ export default function ProductDetail() {
               </div>
             )}
           </div>
-          {product.originalPrice && !zoomed && (
+          {product.discountPercent > 0 && !zoomed && (
             <div className="absolute top-4 left-4 gold-gradient text-accent-foreground text-sm font-bold px-4 py-1.5 rounded-full">
-              خصم {Math.round((1 - product.price / product.originalPrice) * 100)}%
+              خصم {product.discountPercent}%
             </div>
           )}
         </motion.div>
@@ -89,17 +95,18 @@ export default function ProductDetail() {
         >
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-foreground">{product.name}</h1>
           <div className="flex items-center gap-3">
-            <span className="text-3xl font-bold text-accent">{product.price} ر.س</span>
-            {product.originalPrice && (
-              <span className="text-lg text-muted-foreground line-through">{product.originalPrice} ر.س</span>
+            <span className="text-3xl font-bold text-accent">{price.toLocaleString()} دج</span>
+            {product.discountPercent > 0 && (
+              <span className="text-lg text-muted-foreground line-through">{originalPrice.toLocaleString()} دج</span>
             )}
           </div>
           <p className="text-muted-foreground leading-relaxed text-lg">{product.description}</p>
 
           <div className="bg-secondary/50 rounded-xl p-4">
-            <h4 className="font-bold text-foreground mb-1">القماش</h4>
-            <p className="text-muted-foreground">{product.fabric}</p>
+            <h4 className="font-bold text-foreground mb-1">نوع القماش</h4>
+            <p className="text-muted-foreground">{product.fabricType}</p>
           </div>
+
 
           {/* Size */}
           <div>

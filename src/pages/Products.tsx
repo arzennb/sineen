@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { products, categories, fabricTypes } from "@/lib/products";
+import { useProducts } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlidersHorizontal, X } from "lucide-react";
 
 export default function Products() {
+  const { products, categories, fabrics } = useProducts();
   const [category, setCategory] = useState("الكل");
   const [fabric, setFabric] = useState("الكل");
   const [showFilters, setShowFilters] = useState(false);
 
+  // Note: Customers page uses 'fabric' from products-store which maps to 'fabricType' in dynamic system
   const filtered = products.filter((p) => {
     const catMatch = category === "الكل" || p.category === category;
-    const fabMatch = fabric === "الكل" || p.fabric === fabric;
+    const fabMatch = fabric === "الكل" || p.fabricType === fabric;
     return catMatch && fabMatch;
   });
 
@@ -59,7 +61,7 @@ export default function Products() {
         <div>
           <span className="text-sm font-medium text-foreground mb-2 block">القماش</span>
           <div className="flex flex-wrap gap-2">
-            {fabricTypes.map((f) => (
+            {fabrics.map((f) => (
               <motion.button
                 key={f}
                 whileTap={{ scale: 0.95 }}

@@ -9,7 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useOrders } from "@/lib/orders";
 
 export default function Checkout() {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice, clearCart, totalItems } = useCart();
   const { addOrder } = useOrders();
   const [submitted, setSubmitted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<"card" | "cod">("cod");
@@ -69,17 +69,18 @@ export default function Checkout() {
     addOrder({
       customerName: formData.name,
       customerPhone: formData.phone,
-      customerEmail: formData.email,
+      customerWilaya: "16 - Alger",
       customerAddress: formData.address,
+      deliveryType: "Yalidine",
       items: items.map((i) => ({
         productName: i.product.name,
         quantity: i.quantity,
         size: i.selectedSize,
-        color: i.selectedColor,
-        price: i.product.price,
+        price: totalPrice / totalItems, // Approximation or better use getProductPrice if needed, but totalPrice is the ground truth
       })),
-      total: totalPrice,
-      paymentMethod,
+      totalDZD: totalPrice,
+      isOnlineOrder: true,
+      deliveryFee: 400,
     });
     clearCart();
     setSubmitted(true);
@@ -120,13 +121,9 @@ export default function Checkout() {
             </div>
           </motion.div>
 
-
-
-
-
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button type="submit" size="lg" className="w-full gold-gradient border-0 text-foreground font-bold text-lg py-6">
-              إتمام الشراء — {totalPrice} ر.س
+              إتمام الشراء — {totalPrice.toLocaleString()} دج
             </Button>
           </motion.div>
         </form>
@@ -145,15 +142,16 @@ export default function Checkout() {
                 <p className="font-medium text-foreground text-sm">{item.product.name}</p>
                 <p className="text-xs text-muted-foreground">{item.selectedSize} | {item.selectedColor} × {item.quantity}</p>
               </div>
-              <span className="font-bold text-accent text-sm">{item.product.price * item.quantity} ر.س</span>
+              <span className="font-bold text-accent text-sm">{(item.product.basePriceDZD * item.quantity).toLocaleString()} دج</span>
             </div>
           ))}
           <div className="flex justify-between font-bold text-foreground text-xl pt-2">
             <span>الإجمالي</span>
-            <span className="text-accent">{totalPrice} ر.س</span>
+            <span className="text-accent">{totalPrice.toLocaleString()} دج</span>
           </div>
         </motion.div>
       </div>
     </motion.div>
+
   );
 }

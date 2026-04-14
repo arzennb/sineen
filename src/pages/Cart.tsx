@@ -42,7 +42,7 @@ export default function Cart() {
                 <div className="flex-1 space-y-2">
                   <h3 className="font-heading font-bold text-foreground">{item.product.name}</h3>
                   <p className="text-sm text-muted-foreground">المقاس: {item.selectedSize} | اللون: {item.selectedColor}</p>
-                  <p className="font-bold text-accent text-lg">{item.product.price} ر.س</p>
+                  <p className="font-bold text-accent text-lg">{ (item.product.basePriceDZD || 0).toLocaleString() } دج</p>
                   <div className="flex items-center gap-2">
                     <motion.button
                       whileTap={{ scale: 0.85 }}
@@ -82,7 +82,7 @@ export default function Cart() {
           <h3 className="font-heading text-xl font-bold text-foreground">ملخص الطلب</h3>
           <div className="flex justify-between text-muted-foreground">
             <span>المجموع الفرعي</span>
-            <span>{totalPrice} ر.س</span>
+            <span>{totalPrice.toLocaleString()} دج</span>
           </div>
           <div className="flex justify-between text-muted-foreground">
             <span>الشحن</span>
@@ -90,8 +90,9 @@ export default function Cart() {
           </div>
           <div className="border-t border-border pt-4 flex justify-between font-bold text-foreground text-xl">
             <span>الإجمالي</span>
-            <span className="text-accent">{totalPrice} ر.س</span>
+            <span className="text-accent">{totalPrice.toLocaleString()} دج</span>
           </div>
+
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
             <Button asChild size="lg" className="w-full gold-gradient border-0 text-foreground font-bold text-base">
               <Link to="/checkout">إتمام الشراء</Link>

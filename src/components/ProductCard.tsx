@@ -1,16 +1,17 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ShoppingCart, Eye, X } from "lucide-react";
-
-import { Product } from "@/lib/products";
+import { Product, useProducts } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 
 export default function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
+  const { getProductPrice } = useProducts();
   const { addItem } = useCart();
   const { toast } = useToast();
+
   const [showSizes, setShowSizes] = useState(false);
 
   const handleAddClick = (e: React.MouseEvent) => {
@@ -83,9 +84,9 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
               </motion.div>
             </div>
             {/* Sale badge */}
-            {product.originalPrice && (
-              <div className="absolute top-3 left-3 gold-gradient text-accent-foreground text-xs font-bold px-3 py-1 rounded-full">
-                خصم {Math.round((1 - product.price / product.originalPrice) * 100)}%
+            {product.discountPercent > 0 && (
+              <div className="absolute top-4 left-4 gold-gradient text-accent-foreground text-sm font-bold px-4 py-1.5 rounded-full">
+                خصم {product.discountPercent}%
               </div>
             )}
           </div>
@@ -93,12 +94,12 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
             <h3 className="font-heading text-lg font-bold text-foreground leading-tight group-hover:text-accent transition-colors">
               {product.name}
             </h3>
-            <p className="text-sm text-muted-foreground">{product.fabric}</p>
+            <p className="text-sm text-muted-foreground">{product.fabricType}</p>
             <div className="flex items-center justify-between pt-2">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-accent">{product.price} ر.س</span>
-                {product.originalPrice && (
-                  <span className="text-sm text-muted-foreground line-through">{product.originalPrice} ر.س</span>
+              <div className="flex items-center gap-3">
+                <span className="text-3xl font-bold text-accent">{price.toLocaleString()} دج</span>
+                {product.discountPercent > 0 && (
+                  <span className="text-lg text-muted-foreground line-through">{originalPrice.toLocaleString()} دج</span>
                 )}
               </div>
               <Button

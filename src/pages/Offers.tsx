@@ -1,10 +1,11 @@
-import { products } from "@/lib/products";
+import { useProducts } from "@/lib/products";
 import ProductCard from "@/components/ProductCard";
 import { Tag, Percent } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function Offers() {
-  const offers = products.filter((p) => p.originalPrice);
+  const { products } = useProducts();
+  const offers = products.filter((p) => p.discountPercent > 0);
 
   return (
     <div className="container py-10">

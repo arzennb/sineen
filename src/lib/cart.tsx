@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { Product } from "./products";
+import { Product, useProducts } from "./products";
 
 export interface CartItem {
   product: Product;
@@ -22,13 +22,14 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  const { getProductPrice } = useProducts();
 
   const addItem = (product: Product, size: string, color: string) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id && i.selectedSize === size && i.selectedColor === color);
       if (existing) {
         return prev.map((i) =>
-          i.product.id === product.id && i.selectedSize === size && i.selectedColor === color
+          (i.product.id === product.id && i.selectedSize === size && i.selectedColor === color)
             ? { ...i, quantity: i.quantity + 1 }
             : i
         );
@@ -51,7 +52,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalPrice = items.reduce((sum, i) => sum + i.product.price * i.quantity, 0);
+  
+  const totalPrice = items.reduce((sum, i) => {
+    const price = getProductPrice(i.product, i.selectedSize);
+    return sum + price * i.quantity;
+  }, 0);
 
   return (
     <CartContext.Provider value={{ items, addItem, removeItem, updateQuantity, clearCart, totalItems, totalPrice }}>

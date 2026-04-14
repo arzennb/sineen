@@ -83,4 +83,67 @@
   .card-hover {
     @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
+
+  /* ====== Saneen Utility Classes (for Dashboard) ====== */
+  .saneen-card {
+    @apply bg-white rounded-3xl border border-gray-100 shadow-sm transition-all duration-300;
+  }
+
+  .saneen-btn-dark {
+    @apply bg-black text-white hover:bg-[#A68966] px-8 h-12 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50;
+  }
+
+  .saneen-btn-gold {
+     background-color: hsl(40 70% 55%);
+     @apply text-white px-8 h-12 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 disabled:opacity-50 hover:opacity-90;
+  }
+
+  .saneen-btn-outline {
+    @apply border-2 border-gray-100 text-gray-900 hover:bg-gray-50 px-8 h-12 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95;
+  }
+
+  .saneen-input {
+    @apply bg-[#F8F7F4] border border-[#E5E0D8] text-gray-900 placeholder:text-gray-400 focus:bg-white focus:border-[#A68966] focus:ring-2 focus:ring-[#A68966]/20 h-14 rounded-2xl px-6 font-bold transition-all outline-none text-sm;
+  }
+
+  .saneen-select {
+    @apply bg-[#F8F7F4] border border-[#E5E0D8] text-gray-900 h-14 rounded-2xl px-5 font-bold transition-all outline-none cursor-pointer text-sm;
+    @apply focus:bg-white focus:border-[#A68966] focus:ring-2 focus:ring-[#A68966]/20;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 16px center;
+    padding-left: 2.5rem;
+  }
+
+  .saneen-label {
+    @apply text-xs font-black text-[#8E8B83] uppercase tracking-widest block mb-2;
+  }
+}
+
+/* ====== Printing (from main Dashboard) ====== */
+@media print {
+  #root, .no-print, header, nav, footer, [role="dialog"] {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.printing #printable-invoice {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    padding: 2cm !important;
+  }
+  body.printing-receipt #printable-pos-receipt {
+    display: block !important;
+    position: relative !important;
+    width: 80mm !important;
+    padding: 5mm !important;
+  }
+}
+
+#printable-invoice, #printable-pos-receipt {
+  display: none;
 }
